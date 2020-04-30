@@ -16,7 +16,7 @@ end
 
 def read_polls()
     sql = "SELECT * from polls;"
-    poll = run_sql(sql)
+    poll = run_sql(sql,[])
     poll
 end
 
