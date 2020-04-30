@@ -4,7 +4,7 @@ require 'bcrypt'
 
 def create_user(user_first_name, user_email, user_password)
     password_digested = BCrypt::Password.create(user_password)
-    sql = "INSERT into users (first_name, email, password_digested) VALUES ($1, $2, $3);"
+    sql = "INSERT into users (first_name, email, password_digested) VALUES ($1, $2, $3)RETURNING*;"
     run_sql(sql, [user_first_name, user_email, password_digested])
 end
 
@@ -37,4 +37,9 @@ end
 def update_user(user_id, first_name, email)
     sql = "UPDATE users SET first_name = $1, email = $2 WHERE user_id = $3"
     run_sql(sql,[first_name, email, user_id])
+end
+
+def delete_user_by_id(user_id)
+    sql = "Delete from users where user_id = $1"
+    user = run_sql(sql,[user_id])
 end

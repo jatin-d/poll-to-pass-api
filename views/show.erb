@@ -3,7 +3,6 @@
 
 <form action="/poll" method="post">
     <input type="hidden" name="poll_id" value="<%=poll['poll_id']%>">
-    <input type="hidden" name="response" value="1">
     <input type="hidden" name="_method" value="patch">
     <div>
         <%choices.each do |choice|%>

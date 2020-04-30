@@ -2,7 +2,7 @@
 <p><%=poll['question']%></p>
 
 <%choices.each do |choice|%>
-    <label for="counts"><%=choice['choice']%>: <%=choice['counts'].split(',').length%></label>
-    <meter id="counts" min="0" max="10" low="3" high="8" optimum="6" value="<%=choice['counts'].split(',').length%>">
+    <label for="counts"><%=choice['choice']%>: <%=choice['counts']%></label>
+    <meter id="counts" min="0" max="10" low="3" high="8" optimum="6" value="<%=choice['counts']%>">
     </meter>
 <%end%>

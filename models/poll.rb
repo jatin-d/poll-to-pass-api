@@ -16,8 +16,8 @@ end
 
 def read_polls()
     sql = "SELECT * from polls;"
-    poll = run_sql(sql,[])
-    poll
+    polls = run_sql(sql,[])
+    polls
 end
 
 def read_polls_by_creator(creator_id)
@@ -47,8 +47,24 @@ def create_poll_master(user_id, poll_title, question, choices)
 end
 
 def delete_poll_by_id(poll_id)
+    delete_choices_by_poll_id(poll_id)
     sql = "DELETE from polls where poll_id =$1;"
     run_sql(sql,[poll_id])
 end
 
+def update_poll(poll_title, poll_question, poll_id)
+    sql ="UPDATE polls SET title = $1, question = $2 WHERE poll_id = $3 RETURNING *;"
+    run_sql(sql, [poll_title, poll_question, poll_id])
+end
+# update_poll_master(session[:user_id], params[poll_id], params['title'], params['question'], choices)
+
+def update_poll_master(poll_id, poll_title, question, choices)
+    update_poll(poll_title, question, poll_id)
+    choices.each do |element|
+        splitValues = element.split(',')
+        choice_id = splitValues[0]
+        choice = splitValues[1]
+        update_choice(choice_id, choice)
+    end
+end
 

@@ -24,19 +24,37 @@ def read_choice_by_poll_id_and_choice_id(poll_id, choice_id)
     choice
 end
 
-def add_choice(poll_id, choice_id, response)
+def add_choice(poll_id, choice_id)
     choice = read_choice_by_poll_id_and_choice_id(poll_id, choice_id)
-    new_count = "#{choice['counts']},#{response}"
+    new_count = choice['counts'].to_i + 1
     sql = "UPDATE choices SET counts = $1 WHERE parent_poll_id = $2 AND choice_id = $3"
     run_sql(sql,[new_count, poll_id, choice_id])
 end
 
 def update_respondent(user_id, poll_id)
-    sql = "UPDATE polls SET respondent_id = $1 WHERE poll_id = $2"
-    run_sql(sql,[user_id, poll_id])
+    sql = "SELECT respondent_ids from polls where poll_id = $1;"
+    response = run_sql(sql,[poll_id])
+    if response[0]['respondent_ids']
+        new_respondent_ids = response[0]['respondent_ids'].concat(",").concat(user_id.to_s)
+    else
+        new_respondent_ids = user_id
+    end
+    sql = "UPDATE polls SET respondent_ids = $1 WHERE poll_id = $2"
+    run_sql(sql,[new_respondent_ids, poll_id])
 end
 
-def add_response(user_id, poll_id, choice_id, response)
-    add_choice(poll_id, choice_id, response)
+def add_response(user_id, poll_id, choice_id)
+    add_choice(poll_id, choice_id)
     update_respondent(user_id, poll_id)
 end
+
+def update_choice(choice_id, choice)
+    sql ="UPDATE choices SET choice = $1 WHERE choice_id = $2;"
+    run_sql(sql, [choice, choice_id])
+end
+
+def delete_choices_by_poll_id(currant_poll_id)
+    sql ="DELETE from choices where parent_poll_id = $1"
+    run_sql(sql, [currant_poll_id])
+end
+
