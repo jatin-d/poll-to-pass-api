@@ -1,0 +1,8 @@
+<p><%=user['first_name']%></p>
+<p><%=user['email']%></p>
+
+<p>Your Polls</p>
+<%polls.each do |poll|%>
+    <a href="/poll/<%=poll['poll_id']%>/edit"><%=poll['title']%></a>
+<%end%>
+<a href="/user/<%=user['user_id']%>/edit">edit profile</a>

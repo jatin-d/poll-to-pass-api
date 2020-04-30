@@ -1,0 +1,6 @@
+<h1>hello world</h1>
+<% polls.each do |poll| %>
+    <p><%=poll['title']%></p>
+    <a href="/poll/<%=poll["poll_id"]%>">take the poll</a>
+    <a href="/poll/<%=poll["poll_id"]%>/show">see results</a>
+<%end%>

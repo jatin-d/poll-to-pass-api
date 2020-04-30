@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Poll To Pass API</title>
+  <link rel='stylesheet' href='/stylesheets/main.css'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+  <a href="/">Home</a>
+  <a href="/user/new">SignUp</a>
+  <a href="/login">LogIn</a>
+  <%if !!session[:user_id]%>
+  <a href="/poll/new">Create Poll</a>
+  <a href="/user">Profile</a>
+  <a href="/logout">LogOut</a>
+  <%=read_user_by_id(session[:user_id])['first_name']%>
+  <%end%>
+
+  </header>
+  <div>
+    <div>
+      <%= yield %>
+    </div>
+  </div>
+</body>
+</html>

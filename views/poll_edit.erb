@@ -1,0 +1,14 @@
+
+<form action="/poll/edit" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="poll_id" value="<%=poll['poll_id']%>">
+    <label for="">Title</label>
+    <input type="text" name="title" value=<%=poll['title']%>>
+    <label for="">Question</label>
+    <input type="text" name="question" value=<%=poll['Question']%>>
+    <%choices.each_with_index do |index, choice|%>
+        <label for="">Choice<%index+1%></label>
+        <input type="text" name="choice<%index+1%>" value=<%=choice['choice']%>>
+    <%end%>
+    <button>Submit</button>
+</form>
