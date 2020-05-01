@@ -1,8 +1,21 @@
-<form action="/login" method="post">
-    <label for="email">e-mail</label>
-    <input type="text" name="email">
-    <label for="password">Password</label>
-    <input type="password" name="password">
-    <button>LogIn</button>
-</form>
-<a href="/user/new">SignUp</a>
+
+<div class="pageContainer">
+
+    <form action="/login" method="post">
+        <div class="inputContainer">
+            <label for="email">e-mail</label>
+            <input type="text" name="email">
+        </div>
+        <div class="inputContainer">
+            <label for="password">Password</label>
+            <input type="password" name="password">
+        </div>
+        <div id="loginPageButtonWrapper">
+            <button>LogIn</button>
+            <a href="/user/new">SignUp</a>
+        </div>
+    </form>
+        
+
+
+</div>

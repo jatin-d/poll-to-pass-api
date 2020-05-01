@@ -1,8 +1,15 @@
-<p><%=poll['title']%></p>
-<p><%=poll['question']%></p>
+<div class="pageContainer">
+ 
+    <p><%=poll['title']%></p>
+    <p><%=poll['question']%></p>
 
-<%choices.each do |choice|%>
-    <label for="counts"><%=choice['choice']%>: <%=choice['counts']%></label>
-    <meter id="counts" min="0" max="10" low="3" high="8" optimum="6" value="<%=choice['counts']%>">
-    </meter>
-<%end%>
+    <%choices.each do |choice|%>
+        <div id="meterWrapper">
+            <label for="counts"><%=choice['choice']%>: </label>
+            <p><%=choice['counts']%>  <meter id="counts" min="0" max="10" low="3" high="8" optimum="6" value="<%=choice['counts']%>">
+            
+            </meter></p>
+        </div>
+    <%end%>
+
+</div>

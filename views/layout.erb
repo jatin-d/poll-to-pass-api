@@ -2,25 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Poll To Pass API</title>
+  <title>Poll To Pass Api</title>
   <link rel='stylesheet' href='/stylesheets/main.css'>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <header>
-  <a href="/">Home</a>
-  <%if !session[:user_id]%>
-    <a href="/user/new">SignUp</a>
-    <a href="/login">LogIn</a>
-  <%end%>
-
-  <%if !!session[:user_id]%>
-    <a href="/poll/new">Create Poll</a>
-    <a href="/user">Profile</a>
-    <a href="/logout">LogOut</a>
-    <%=read_user_by_id(session[:user_id])['first_name']%>
-  <%end%>
-
+    <div id="ofline_nav_container">
+    <a href="/">Home</a>
+    <a href="/about">About Us</a>
+    <%if !session[:user_id]%>
+      <a href="/user/new">SignUp</a>
+      <a href="/login">LogIn</a>
+    <%end%>
+    </div>
+    <h1 id="title">Poll To Pass</h1>
+    <div id="online_nav_container">
+      <%if !!session[:user_id]%>
+        <a href="/poll/new">NewPoll</a>
+        <a href="/user">Profile</a>
+        <a href="/logout">LogOut</a>
+        <a href="/user"><%=read_user_by_id(session[:user_id])['first_name']%></a>
+      <%end%>
+    </div>
   </header>
   <div>
     <div>

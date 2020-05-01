@@ -1,14 +1,18 @@
-<p><%=poll['title']%></p>
-<p><%=poll['question']%></p>
+<div class="pageContainer">
 
-<form action="/poll" method="post">
-    <input type="hidden" name="poll_id" value="<%=poll['poll_id']%>">
-    <input type="hidden" name="_method" value="patch">
-    <div>
-        <%choices.each do |choice|%>
-            <input type="radio" id="response" name="choice_id" value="<%=choice['choice_id']%>">
-            <label for="poll_response"><%=choice['choice']%></label>
-        <%end%>
-    </div>
-    <button>Submit</button>
-</form>
+    <p><%=poll['title']%></p>
+    <p><%=poll['question']%></p>
+
+    <form action="/poll" method="post">
+        <input type="hidden" name="poll_id" value="<%=poll['poll_id']%>">
+        <input type="hidden" name="_method" value="patch">
+        <div>
+            <%choices.each do |choice|%>
+                <input type="radio" id="response" name="choice_id" value="<%=choice['choice_id']%>">
+                <label for="poll_response"><%=choice['choice']%></label>
+            <%end%>
+        </div>
+        <button>Submit</button>
+    </form>
+
+</div>

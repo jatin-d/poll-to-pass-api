@@ -1,11 +1,21 @@
-<form action="/user" method="post">
-    <input type="hidden" name="_method" value="patch">
-    <input type="hidden" name="user_id" value=<%=user['user_id']%>>
-    <label for="first_name">First Name</label>
-    <input type="text" name="first_name" value="<%=user['first_name']%>">
-    <label for="email">e-mail</label>
-    <input type="text" name="email" value="<%=user['email']%>">
-    <label for="password">Password</label>
-    <input type="password" name="password">
-    <button>Save</button>
-</form>
+<div class="pageContainer">
+
+    <form action="/user" method="post">
+        <input type="hidden" name="_method" value="patch">
+        <input type="hidden" name="user_id" value=<%=user['user_id']%>>
+        <div class="inputContainer">
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" value="<%=user['first_name']%>">
+        </div>
+        <div class="inputContainer">
+            <label for="email">e-mail</label>
+            <input type="text" name="email" value="<%=user['email']%>">
+        </div>
+        <div class="inputContainer">
+            <label for="password">Password</label>
+            <input type="password" name="password">
+        </div>
+        <button>Save</button>
+    </form>
+
+</div>

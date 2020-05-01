@@ -1,20 +1,29 @@
+<div class="pageContainer">
+    <form action="/poll/<%=poll['poll_id']%>/edit" method="post">
+            <input type="hidden" name="_method" value="patch">
+            <input type="hidden" name="poll_id" value=<%=poll['poll_id']%>>
 
-<form action="/poll/<%=poll['poll_id']%>/edit" method="post">
-    <input type="hidden" name="_method" value="patch">
-    <input type="hidden" name="poll_id" value=<%=poll['poll_id']%>>
-    <label for="">Title</label>
-    <input type="text" name="title" value="<%=poll['title']%>">
-    <label for="">Question</label>
-    <input type="text" name="question" value="<%=poll['question']%>">
-    <%choices.each_with_index do |choice, index|%>
-        <label for="">"Choice<%=index+1%></label>
-        <input type="text" name="choice<%=index+1%>" value="<%=choice['choice']%>">
-        <input type="hidden" name="choice_id<%=index+1%>" value=<%=choice['choice_id']%>>
-    <%end%>
-    <button>Submit</button>
-</form>
-<form action="/poll" method="post">
-    <input type="hidden" name="_method" value="delete">
-    <input type="hidden" name="poll_id" value=<%=poll['poll_id']%>>
-    <button>Delete Poll</button>
-</form>
+        <div class="inputContainer">
+            <label for="">Title</label>
+            <input type="text" name="title" value="<%=poll['title']%>">
+
+        </div>
+        <div class="inputContainer">
+            <label for="">Question</label>
+            <input type="text" name="question" value="<%=poll['question']%>">
+        </div>
+        <div class="inputContainer">
+            <%choices.each_with_index do |choice, index|%>
+                <label for="">"Choice<%=index+1%></label>
+                <input type="text" name="choice<%=index+1%>" value="<%=choice['choice']%>">
+                <input type="hidden" name="choice_id<%=index+1%>" value=<%=choice['choice_id']%>>
+            <%end%>
+        </div>
+        <button>Submit</button>
+    </form>
+    <form action="/poll" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="hidden" name="poll_id" value=<%=poll['poll_id']%>>
+        <button>Delete Poll</button>
+    </form>
+</div>

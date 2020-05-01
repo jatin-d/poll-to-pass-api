@@ -1,6 +1,12 @@
-<h1>Poll to Pass</h1>
-<% polls.each do |poll| %>
-    <p><%=poll['title']%></p>
-    <a href="/poll/<%=poll["poll_id"]%>">take the poll</a>
-    <a href="/poll/<%=poll["poll_id"]%>/show">see results</a>
-<%end%>
+
+<div class="pageContainer">
+    <% polls.each do |poll| %>
+        <div id="homepagePollContainer">
+            <p><%=poll['title']%></p>
+            <div id="homepageAContainer">
+                <a id="takePoll" href="/poll/<%=poll["poll_id"]%>">take the poll</a>
+                <a id="viewResult" href="/poll/<%=poll["poll_id"]%>/show">see results</a>
+            </div>
+        </div>
+    <%end%>
+</div>
