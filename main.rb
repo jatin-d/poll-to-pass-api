@@ -61,6 +61,7 @@ erb(:about)
 end
 
 get "/" do  #shows all polls on home page
+  puts "POLL READ FROM #{request.ip}"
   polls = read_polls()
   erb(:index, locals: {polls: polls})
 end
