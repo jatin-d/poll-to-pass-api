@@ -30,3 +30,9 @@ UPDATE coices SET counts = '1' WHERE parent_poll_id = '123456789' AND choice_id 
 DROP TABLE users CASCADE;
 DROP TABLE polls CASCADE;
 DROP TABLE choices CASCADE;
+
+CREATE TABLE email_ip_mapping (
+  request_ip TEXT PRIMARY KEY,
+  last_payload TEXT,
+  email_attempts INT
+);

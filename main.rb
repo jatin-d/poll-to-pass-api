@@ -1,7 +1,12 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+# require 'sinatra/base'
 require 'pg'
 require 'pry' if development?
+# require 'net/http'
+require 'json'
+# require "uri"
+require 'httparty'
 
 require_relative 'models/poll'
 require_relative 'models/user'
@@ -10,7 +15,7 @@ require_relative 'models/choice'
 
 enable :sessions
 
-
+set :bind, '0.0.0.0'
 # LIB
 
 def user_exists?(user_email)
@@ -27,6 +32,25 @@ def poll_taken?(poll_id, user_id)
   else
     false
   end
+end
+
+def send_email(payload)
+  options = { 
+    :body => {
+      :user_id => ENV['REACT_APP_UID'],
+      :service_id => ENV['REACT_APP_SUID'],
+      :template_id => ENV['REACT_APP_PCF'],
+      :template_params => {
+          :name => payload['name'],
+          :email => payload['email'],
+          :message => payload['message']
+      }
+    }.to_json,
+    :headers => {
+      "Content-Type" => "application/json" 
+    }
+  }
+  HTTParty.post('https://api.emailjs.com/api/v1.0/email/send', options)
 end
  
  
@@ -192,3 +216,25 @@ get "/error" do
   message = errors[params[:error_code]];
   erb(:error, locals:{message: message})
 end
+
+post "/email" do
+  puts "REACHED FROM #{request.ip}"
+  request.body.rewind
+  request_payload = JSON.parse request.body.read
+  attempts = read_email_attempts(request.ip);
+  if attempts <= 0
+    response = send_email(request_payload)
+    if response.to_str == "OK"
+      create_update_email_attempt('create',request.ip, request_payload, 1)
+    end
+    status 200
+  elsif attempts > 0 && attempts < 5
+    response = send_email(request_payload)
+    if response.to_str == "OK"
+      create_update_email_attempt('update',request.ip, request_payload, attempts+1)
+    end
+    status 200
+  else
+    status 403
+  end
+end 

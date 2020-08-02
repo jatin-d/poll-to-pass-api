@@ -43,3 +43,23 @@ def delete_user_by_id(user_id)
     sql = "Delete from users where user_id = $1"
     user = run_sql(sql,[user_id])
 end
+
+def read_email_attempts(request_ip)
+    sql = "select email_attempts from email_ip_mapping where request_ip = $1"
+    attempts = run_sql(sql,[request_ip])
+    if attempts.count == 0
+        return 0
+    else
+        return attempts[0]['email_attempts'].to_i
+    end
+end
+
+def create_update_email_attempt(operation, ip, payload, attempts)
+    sql = 'insert into email_ip_mapping values ($1, $2, $3)'
+    args = [ip, payload.to_s, attempts]
+    if(operation == 'update')
+        sql = 'update email_ip_mapping set last_payload = $1, email_attempts = $2'
+        args = [payload.to_s, attempts]
+    end
+    run_sql(sql,args)
+end
