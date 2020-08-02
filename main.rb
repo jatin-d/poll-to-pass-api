@@ -219,23 +219,29 @@ get "/error" do
 end
 
 post "/email" do
-  puts "REACHED FROM #{request.ip}"
+  puts "EMAIL FROM #{request.ip}"
+  email_limit = ENV['EMAIL_LIMIT']
   request.body.rewind
   request_payload = JSON.parse request.body.read
   attempts = read_email_attempts(request.ip);
+  puts "ATTEMPTS FROM #{request.ip} ARE #{attempts}"
   if attempts <= 0
     response = send_email(request_payload)
+    puts "RESPONSE FROM send_email #{response}"
     if response.to_str == "OK"
       create_update_email_attempt('create',request.ip, request_payload, 1)
     end
     status 200
-  elsif attempts > 0 && attempts < 5
+  elsif attempts > 0 && attempts < email_limit
+    puts "ATTEMPTS WITHIN email_limit OF #{email_limit}"
     response = send_email(request_payload)
+    puts "RESPONSE FROM send_email #{response}"
     if response.to_str == "OK"
       create_update_email_attempt('update',request.ip, request_payload, attempts+1)
     end
     status 200
   else
+    puts "ATTEMPTS EXCEEDED email_limit OF #{email_limit}"
     status 403
   end
 end 

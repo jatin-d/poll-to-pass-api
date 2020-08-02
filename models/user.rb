@@ -47,10 +47,11 @@ end
 def read_email_attempts(request_ip)
     sql = "select email_attempts from email_ip_mapping where request_ip = $1"
     attempts = run_sql(sql,[request_ip])
-    if attempts.count == 0
-        return 0
-    else
+    puts "ATTEMPTS FROM #{request_ip} IN DB ARE #{attempts}"
+    if attempts && attempts.count != 0
         return attempts[0]['email_attempts'].to_i
+    else
+        return 0
     end
 end
 
@@ -61,5 +62,6 @@ def create_update_email_attempt(operation, ip, payload, attempts)
         sql = 'update email_ip_mapping set last_payload = $1, email_attempts = $2'
         args = [payload.to_s, attempts]
     end
-    run_sql(sql,args)
+    sql_response = run_sql(sql,args)
+    puts "sql_response FROM DB AFTER INSERT IS #{sql_response}"
 end
