@@ -229,17 +229,22 @@ post "/email" do
     response = send_email(request_payload)
     puts "RESPONSE FROM send_email #{response}"
     if response.to_str == "OK"
+      status 200
       create_update_email_attempt('create',request.ip, request_payload, 1)
+    else
+      status 500
     end
-    status 200
+    
   elsif attempts > 0 && attempts < email_limit
     puts "ATTEMPTS WITHIN email_limit OF #{email_limit}"
     response = send_email(request_payload)
     puts "RESPONSE FROM send_email #{response}"
     if response.to_str == "OK"
+      status 200
       create_update_email_attempt('update',request.ip, request_payload, attempts+1)
+    else
+      status 500
     end
-    status 200
   else
     puts "ATTEMPTS EXCEEDED email_limit OF #{email_limit}"
     status 403
