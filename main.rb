@@ -7,6 +7,8 @@ require 'pry' if development?
 require 'json'
 # require "uri"
 require 'httparty'
+require 'sinatra/cross_origin'
+
 
 require_relative 'models/poll'
 require_relative 'models/user'
@@ -16,6 +18,15 @@ require_relative 'models/choice'
 enable :sessions
 
 set :bind, '0.0.0.0'
+
+configure do
+  enable :cross_origin
+end
+
+before do
+  response.headers['Access-Control-Allow-Origin'] = 'https://jatindhandhalya.com'
+end
+
 # LIB
 
 def user_exists?(user_email)
@@ -224,10 +235,8 @@ post "/email" do
   request.body.rewind
   request_payload = JSON.parse request.body.read
   attempts = read_email_attempts(request.ip);
-  puts "ATTEMPTS FROM #{request.ip} ARE #{attempts}"
   if attempts <= 0
     response = send_email(request_payload)
-    puts "RESPONSE FROM send_email #{response}"
     if response.to_str == "OK"
       status 200
       create_update_email_attempt('create',request.ip, request_payload, 1)
@@ -236,9 +245,7 @@ post "/email" do
     end
     
   elsif attempts > 0 && attempts < email_limit
-    puts "ATTEMPTS WITHIN email_limit OF #{email_limit}"
     response = send_email(request_payload)
-    puts "RESPONSE FROM send_email #{response}"
     if response.to_str == "OK"
       status 200
       create_update_email_attempt('update',request.ip, request_payload, attempts+1)
@@ -250,3 +257,11 @@ post "/email" do
     status 403
   end
 end 
+
+
+options "*" do
+  response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
+  response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
+  response.headers["Access-Control-Allow-Origin"] = "*"
+  200
+end
